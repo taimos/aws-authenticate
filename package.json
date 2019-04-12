@@ -1,6 +1,6 @@
 {
-    "name": "aws-auth",
-    "displayName": "AWS Auth",
+    "name": "aws-authenticate",
+    "displayName": "AWS Authenticate",
     "version": "1.0.0",
     "description": "AWS CLI tool for authorization",
     "keywords": [
@@ -27,7 +27,7 @@
     },
     "main": "dist/index.js",
     "bin": {
-        "aws-auth": "dist/index.js"
+        "aws-authenticate": "dist/index.js"
     },
     "types": "dist/index.d.ts",
     "dependencies": {
@@ -36,9 +36,9 @@
         "proxy-agent": "^3.1.0"
     },
     "bugs": {
-        "url": "https://github.com/taimos/aws-auth/issues"
+        "url": "https://github.com/taimos/aws-authenticate/issues"
     },
-    "repository": "taimos/aws-auth",
+    "repository": "taimos/aws-authenticate",
     "devDependencies": {
         "@types/chai": "^4.1.7",
         "@types/minimist": "^1.2.0",
