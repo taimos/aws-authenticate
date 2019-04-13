@@ -136,6 +136,30 @@ switch (command) {
         console.log('export AWS_PROFILE=');
         break;
     default:
-        console.error('Missing command');
+        console.log('Missing command');
+        console.log('');
+        console.log('aws-authenticate <command> [options]');
+        console.log('');
+        console.log('Commands:');
+        console.log('auth  - used to configure credentials or assume roles');
+        console.log('id    - prints the currently configured IAM principal to the console');
+        console.log('clear - creates a bash snippet to clear all AWS related environment vafriables');
+        console.log('');
+        console.log('Options for \'auth\':');
+        console.log('--role <role>             - The IAM role to assume');
+        console.log('--roleAccount <accountId> - The AWS account owning the role to assume. If not specified, your current account is used.');
+        console.log('--region <region>         - The region to configure for subsequent calls');
+        console.log('--profile <profile>       - The profile configured in \'~/.aws/config\' to use');
+        console.log('--externalId <id>         - The external ID to use when assuming roles');
+        console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
+        console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');
+        console.log('--id                      - Print the final user information to the console for debugging purpose');
+        console.log('');
+        console.log('');
+        console.log('Example usage:');
+        console.log('');
+        console.log('eval "$(aws-authenticate auth --role MyRole)"');
+        console.log('');
+        process.exit(1);
         break;
 }
