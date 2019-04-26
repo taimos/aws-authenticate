@@ -60,10 +60,31 @@ $ aws-authenticate id
 
 The `clear` command creates a bash snippet to clear all AWS related environment vafriables.
 
+### accounts
+
+The `accounts` command lists AWS accounts withing the currect organization.
+
+Accounts are printed one account per line with the following fields in a CSV format.
+```
+<ID>,<EMAIL>,<NAME>,<SAFENAME>,<STATUS>
+```
+
+The safe name is the name with only alphanumeric characters and the rest being replaced with dashes.
+
+```
+123456789012,acc1@example.com,My Example Account,my-example-account,ACTIVE
+210987654321,acc2@example.com,My Sub Account,my-sub-account,ACTIVE
+```
+
+Valid options are:
+
+* `--parent <parent>` - Limit the account list to the given orga parent (OU)
+
 # Changelog
 
 ## master
 * add `--script` option to run bash scripts directly
+* add `accounts` command to list AWS accounts
 
 ## 1.0.1
 * add README and `help` command

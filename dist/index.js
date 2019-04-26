@@ -104,12 +104,36 @@ async function doAuth() {
         }
     }
 }
+async function showAccounts() {
+    const orgaClient = new AWS.Organizations(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    const accounts = [];
+    let NextToken;
+    do {
+        if (args.parent) {
+            const res = await orgaClient.listAccountsForParent({ NextToken, ParentId: args.parent }).promise();
+            NextToken = res.NextToken;
+            res.Accounts.forEach((acc) => accounts.push(acc));
+        }
+        else {
+            const res = await orgaClient.listAccounts({ NextToken }).promise();
+            NextToken = res.NextToken;
+            res.Accounts.forEach((acc) => accounts.push(acc));
+        }
+    } while (NextToken);
+    accounts.sort((a, b) => a.Id.localeCompare(b.Id)).forEach((acc) => {
+        const safeName = acc.Name.replace(/[^A-Za-z0-9-]/g, '-').replace(/-+/g, '-').toLowerCase();
+        console.log(`${acc.Id},${acc.Email},${acc.Name},${safeName},${acc.Status}`);
+    });
+}
 switch (command) {
     case 'auth':
         doAuth().then(() => undefined);
         break;
     case 'id':
         showId().then(() => undefined);
+        break;
+    case 'accounts':
+        showAccounts().then(() => undefined);
         break;
     case 'clear':
         console.log('# Exports to clear AWS config');
@@ -129,7 +153,8 @@ switch (command) {
         console.log('Commands:');
         console.log('auth  - used to configure credentials or assume roles');
         console.log('id    - prints the currently configured IAM principal to the console');
-        console.log('clear - creates a bash snippet to clear all AWS related environment vafriables');
+        console.log('clear - creates a bash snippet to clear all AWS related environment variables');
+        console.log('accounts - list all AWS accounts for the current organization');
         console.log('');
         console.log('Options for \'auth\':');
         console.log('--role <role>             - The IAM role to assume');

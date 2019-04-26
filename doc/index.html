@@ -99,10 +99,20 @@
 <span class="hljs-comment"># Account: 123456789012 - User: arn:aws:iam::123456789012:user/johndoe</span></code></pre>
 				<h3 id="clear">clear</h3>
 				<p>The <code>clear</code> command creates a bash snippet to clear all AWS related environment vafriables.</p>
+				<h3 id="accounts">accounts</h3>
+				<p>The <code>accounts</code> command lists AWS accounts withing the currect organization.</p>
+				<p>Accounts are printed one account per line with the following fields in a CSV format.</p>
+				<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">EMAIL</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">NAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">SAFENAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">STATUS</span>&gt;</span></code></pre><p>The safe name is the name with only alphanumeric characters and the rest being replaced with dashes.</p>
+				<pre><code><span class="hljs-number">123456789012</span>,acc1@example.com,My Example Account,<span class="hljs-keyword">my</span>-example-account,ACTIVE
+<span class="hljs-number">210987654321</span>,acc2@example.com,My Sub Account,<span class="hljs-keyword">my</span>-<span class="hljs-function"><span class="hljs-keyword">sub</span>-<span class="hljs-title">account</span>,<span class="hljs-title">ACTIVE</span></span></code></pre><p>Valid options are:</p>
+				<ul>
+					<li><code>--parent &lt;parent&gt;</code> - Limit the account list to the given orga parent (OU)</li>
+				</ul>
 				<h1 id="changelog">Changelog</h1>
 				<h2 id="master">master</h2>
 				<ul>
 					<li>add <code>--script</code> option to run bash scripts directly</li>
+					<li>add <code>accounts</code> command to list AWS accounts</li>
 				</ul>
 				<h2 id="1-0-1">1.0.1</h2>
 				<ul>
@@ -193,6 +203,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#getrolearn" class="tsd-kind-icon">get<wbr>Role<wbr>Arn</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#showaccounts" class="tsd-kind-icon">show<wbr>Accounts</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#showid" class="tsd-kind-icon">show<wbr>Id</a>
