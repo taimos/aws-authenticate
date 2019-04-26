@@ -45,6 +45,7 @@ Valid options are:
 * `--duration <seconds>` - The number of seconds the temporary credentials should be valid. Default is 3600.
 * `--roleSessionName <name>` - The name of the session of the assumed role. Defaults to `AWS-Auth-<xyz>` with `xyz` being the current milliseconds since epoch.
 * `--id` - Print the final user information to the console for debugging purpose
+* `--script` - Run the given script with the AWS env instead of printing it to console
 
 ### id
 
@@ -60,6 +61,9 @@ $ aws-authenticate id
 The `clear` command creates a bash snippet to clear all AWS related environment vafriables.
 
 # Changelog
+
+## master
+* add `--script` option to run bash scripts directly
 
 ## 1.0.1
 * add README and `help` command

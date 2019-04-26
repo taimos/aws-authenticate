@@ -10,6 +10,7 @@ import { APIVersions, ConfigurationOptions } from 'aws-sdk/lib/config';
 import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 import { Agent } from 'http';
 import * as minimist from 'minimist';
+import * as exec from 'native-exec';
 import * as agent from 'proxy-agent';
 
 const args = minimist(process.argv.slice(2), {
@@ -28,6 +29,7 @@ const profile = args.profile;
 const externalId = args.externalId;
 const duration = args.duration;
 const roleSessionName = args.roleSessionName;
+const script = args.script;
 
 function getConfigObject() : ConfigurationOptions & ConfigurationServicePlaceholders & APIVersions {
     return {
@@ -111,9 +113,13 @@ async function doAuth() : Promise<void> {
     if (args.id) {
         await showId();
     }
-    for (const key in awsEnv) {
-        if (awsEnv.hasOwnProperty(key)) {
-            console.log(`export ${key}=${awsEnv[key]}`);
+    if (args.script) {
+        exec('bash', { ...awsEnv }, [`${args.script}`]);
+    } else {
+        for (const key in awsEnv) {
+            if (awsEnv.hasOwnProperty(key)) {
+                console.log(`export ${key}=${awsEnv[key]}`);
+            }
         }
     }
 }
@@ -154,6 +160,7 @@ switch (command) {
         console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
         console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');
         console.log('--id                      - Print the final user information to the console for debugging purpose');
+        console.log('--script                  - Run the given script with the AWS env instead of printing it to console');
         console.log('');
         console.log('');
         console.log('Example usage:');
