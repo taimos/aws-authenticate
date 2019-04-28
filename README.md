@@ -80,11 +80,21 @@ Valid options are:
 
 * `--parent <parent>` - Limit the account list to the given orga parent (OU)
 
+### update-idp
+
+The `update-idp` command is used to create or update the given SAML identity provider
+
+Valid options are:
+
+* `--name <name>` - Name of the IdP to configure. Defaults to `SAML`
+* `--metadata <file>` - The file to use as SAML metadata
+
 # Changelog
 
 ## master
 * add `--script` option to run bash scripts directly
 * add `accounts` command to list AWS accounts
+* add `update-idp` command to manage SAML IdP
 * fix `clear` command
 
 ## 1.0.1

@@ -5,6 +5,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const AWS = require("aws-sdk");
+const fs_1 = require("fs");
 const minimist = require("minimist");
 const exec = require("native-exec");
 const agent = require("proxy-agent");
@@ -125,54 +126,111 @@ async function showAccounts() {
         console.log(`${acc.Id},${acc.Email},${acc.Name},${safeName},${acc.Status}`);
     });
 }
-switch (command) {
-    case 'auth':
-        doAuth().then(() => undefined);
-        break;
-    case 'id':
-        showId().then(() => undefined);
-        break;
-    case 'accounts':
-        showAccounts().then(() => undefined);
-        break;
-    case 'clear':
-        console.log('# Exports to clear AWS config');
-        console.log('unset AWS_ACCESS_KEY_ID');
-        console.log('unset AWS_SECRET_ACCESS_KEY');
-        console.log('unset AWS_SESSION_TOKEN');
-        console.log('unset AWS_DEFAULT_REGION');
-        console.log('unset AWS_REGION');
-        console.log('unset AWS_DEFAULT_PROFILE');
-        console.log('unset AWS_PROFILE');
-        break;
-    default:
-        console.log('Missing command');
-        console.log('');
-        console.log('aws-authenticate <command> [options]');
-        console.log('');
-        console.log('Commands:');
-        console.log('auth  - used to configure credentials or assume roles');
-        console.log('id    - prints the currently configured IAM principal to the console');
-        console.log('clear - creates a bash snippet to clear all AWS related environment variables');
-        console.log('accounts - list all AWS accounts for the current organization');
-        console.log('');
-        console.log('Options for \'auth\':');
-        console.log('--role <role>             - The IAM role to assume');
-        console.log('--roleAccount <accountId> - The AWS account owning the role to assume. If not specified, your current account is used.');
-        console.log('--region <region>         - The region to configure for subsequent calls');
-        console.log('--profile <profile>       - The profile configured in \'~/.aws/config\' to use');
-        console.log('--externalId <id>         - The external ID to use when assuming roles');
-        console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
-        console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');
-        console.log('--id                      - Print the final user information to the console for debugging purpose');
-        console.log('--script                  - Run the given script with the AWS env instead of printing it to console');
-        console.log('');
-        console.log('');
-        console.log('Example usage:');
-        console.log('');
-        console.log('eval "$(aws-authenticate auth --role MyRole)"');
-        console.log('');
-        process.exit(1);
-        break;
+async function updateIdp() {
+    const name = args.name || 'SAML';
+    if (!args.metadata) {
+        throw 'Missing idp metadata file. Use --metadata to specify the file.';
+    }
+    const metadata = fs_1.readFileSync(args.metadata, { encoding: 'UTF-8' });
+    const iamClient = new AWS.IAM(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    console.log(`Checking for identity provider ${name}`);
+    const listResult = await iamClient.listSAMLProviders().promise();
+    let providerARN;
+    listResult.SAMLProviderList.forEach((provider) => {
+        const entryArn = provider.Arn;
+        if (entryArn.substring(entryArn.lastIndexOf('/') + 1) === name) {
+            providerARN = entryArn;
+        }
+    });
+    if (providerARN) {
+        // Update IdP
+        const updateRes = await iamClient.updateSAMLProvider({
+            SAMLProviderArn: providerARN,
+            SAMLMetadataDocument: metadata,
+        }).promise();
+        console.log(`Updated identity provider ${updateRes.SAMLProviderArn}`);
+    }
+    else {
+        // Create IdP
+        const createRes = await iamClient.createSAMLProvider({
+            Name: name,
+            SAMLMetadataDocument: metadata,
+        }).promise();
+        console.log(`Created identity provider ${createRes.SAMLProviderArn}`);
+    }
 }
+function doClear() {
+    console.log('# Exports to clear AWS config');
+    console.log('unset AWS_ACCESS_KEY_ID');
+    console.log('unset AWS_SECRET_ACCESS_KEY');
+    console.log('unset AWS_SESSION_TOKEN');
+    console.log('unset AWS_DEFAULT_REGION');
+    console.log('unset AWS_REGION');
+    console.log('unset AWS_DEFAULT_PROFILE');
+    console.log('unset AWS_PROFILE');
+}
+function showHelp() {
+    console.log('Missing command');
+    console.log('');
+    console.log('aws-authenticate <command> [options]');
+    console.log('');
+    console.log('Commands:');
+    console.log('auth  - used to configure credentials or assume roles');
+    console.log('id    - prints the currently configured IAM principal to the console');
+    console.log('clear - creates a bash snippet to clear all AWS related environment variables');
+    console.log('accounts - list all AWS accounts for the current organization');
+    console.log('update-idp - update the given SAML identity provider');
+    console.log('');
+    console.log('Options for \'auth\':');
+    console.log('--role <role>             - The IAM role to assume');
+    console.log('--roleAccount <accountId> - The AWS account owning the role to assume. If not specified, your current account is used.');
+    console.log('--region <region>         - The region to configure for subsequent calls');
+    console.log('--profile <profile>       - The profile configured in \'~/.aws/config\' to use');
+    console.log('--externalId <id>         - The external ID to use when assuming roles');
+    console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
+    console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');
+    console.log('--id                      - Print the final user information to the console for debugging purpose');
+    console.log('--script                  - Run the given script with the AWS env instead of printing it to console');
+    console.log('');
+    console.log('Options for \'accounts\'');
+    console.log('--parent                  - Limit the account list to the given orga parent (OU)');
+    console.log('');
+    console.log('Options for \'update-idp\'');
+    console.log('--name                    - Name of the IdP to configure. Defaults to \'SAML\'');
+    console.log('--metadata                - The file to use as SAML metadata');
+    console.log('');
+    console.log('Example usage:');
+    console.log('');
+    console.log('eval "$(aws-authenticate auth --role MyRole)"');
+    console.log('');
+}
+(async () => {
+    try {
+        switch (command) {
+            case 'auth':
+                await doAuth();
+                break;
+            case 'id':
+                await showId();
+                break;
+            case 'accounts':
+                await showAccounts();
+                break;
+            case 'update-idp':
+                await updateIdp();
+                break;
+            case 'clear':
+                doClear();
+                break;
+            default:
+                showHelp();
+                process.exit(1);
+                break;
+        }
+    }
+    catch (e) {
+        console.log(e);
+        process.exit(1);
+    }
+})();
 //# sourceMappingURL=index.js.map
