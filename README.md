@@ -100,6 +100,8 @@ Valid options are:
 # Changelog
 
 ## master
+
+## 1.1.0
 * add `--script` option to run bash scripts directly
 * add `accounts` command to list AWS accounts
 * add `update-idp` command to manage SAML IdP
