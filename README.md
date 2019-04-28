@@ -85,6 +85,7 @@ Valid options are:
 ## master
 * add `--script` option to run bash scripts directly
 * add `accounts` command to list AWS accounts
+* fix `clear` command
 
 ## 1.0.1
 * add README and `help` command

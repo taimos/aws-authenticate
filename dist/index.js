@@ -137,13 +137,13 @@ switch (command) {
         break;
     case 'clear':
         console.log('# Exports to clear AWS config');
-        console.log('export AWS_ACCESS_KEY_ID=');
-        console.log('export AWS_SECRET_ACCESS_KEY=');
-        console.log('export AWS_SESSION_TOKEN=');
-        console.log('export AWS_DEFAULT_REGION=');
-        console.log('export AWS_REGION=');
-        console.log('export AWS_DEFAULT_PROFILE=');
-        console.log('export AWS_PROFILE=');
+        console.log('unset AWS_ACCESS_KEY_ID');
+        console.log('unset AWS_SECRET_ACCESS_KEY');
+        console.log('unset AWS_SESSION_TOKEN');
+        console.log('unset AWS_DEFAULT_REGION');
+        console.log('unset AWS_REGION');
+        console.log('unset AWS_DEFAULT_PROFILE');
+        console.log('unset AWS_PROFILE');
         break;
     default:
         console.log('Missing command');
