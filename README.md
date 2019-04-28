@@ -89,12 +89,21 @@ Valid options are:
 * `--name <name>` - Name of the IdP to configure. Defaults to `SAML`
 * `--metadata <file>` - The file to use as SAML metadata
 
+### set-alias
+
+The `set-alias` command enables you to configure an AWS account alias.
+
+Valid options are:
+
+* `--name <name>` - Name of the alias to configure
+
 # Changelog
 
 ## master
 * add `--script` option to run bash scripts directly
 * add `accounts` command to list AWS accounts
 * add `update-idp` command to manage SAML IdP
+* add `set-alias` command to manage SAML IdP
 * fix `clear` command
 
 ## 1.0.1

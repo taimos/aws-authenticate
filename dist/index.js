@@ -179,6 +179,7 @@ function showHelp() {
     console.log('id    - prints the currently configured IAM principal to the console');
     console.log('clear - creates a bash snippet to clear all AWS related environment variables');
     console.log('accounts - list all AWS accounts for the current organization');
+    console.log('set-alias - set the alias for the current AWS account');
     console.log('update-idp - update the given SAML identity provider');
     console.log('');
     console.log('Options for \'auth\':');
@@ -195,6 +196,9 @@ function showHelp() {
     console.log('Options for \'accounts\'');
     console.log('--parent                  - Limit the account list to the given orga parent (OU)');
     console.log('');
+    console.log('Options for \'set-alias\'');
+    console.log('--name                    - Name of the alias to configure');
+    console.log('');
     console.log('Options for \'update-idp\'');
     console.log('--name                    - Name of the IdP to configure. Defaults to \'SAML\'');
     console.log('--metadata                - The file to use as SAML metadata');
@@ -203,6 +207,21 @@ function showHelp() {
     console.log('');
     console.log('eval "$(aws-authenticate auth --role MyRole)"');
     console.log('');
+}
+async function setAlias() {
+    if (!args.name) {
+        throw 'Missing alias name. Use --name to specify it.';
+    }
+    const iamClient = new AWS.IAM(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    console.log(`Checking for account alias ${args.name}`);
+    const listResult = await iamClient.listAccountAliases().promise();
+    if (listResult.AccountAliases && listResult.AccountAliases.includes(args.name)) {
+        console.log(`Account alias already set ${args.name}`);
+    }
+    else {
+        await iamClient.createAccountAlias({ AccountAlias: args.name }).promise();
+        console.log(`Created account alias ${args.name}`);
+    }
 }
 (async () => {
     try {
@@ -218,6 +237,9 @@ function showHelp() {
                 break;
             case 'update-idp':
                 await updateIdp();
+                break;
+            case 'set-alias':
+                await setAlias();
                 break;
             case 'clear':
                 doClear();

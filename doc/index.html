@@ -108,11 +108,26 @@
 				<ul>
 					<li><code>--parent &lt;parent&gt;</code> - Limit the account list to the given orga parent (OU)</li>
 				</ul>
+				<h3 id="update-idp">update-idp</h3>
+				<p>The <code>update-idp</code> command is used to create or update the given SAML identity provider</p>
+				<p>Valid options are:</p>
+				<ul>
+					<li><code>--name &lt;name&gt;</code> - Name of the IdP to configure. Defaults to <code>SAML</code></li>
+					<li><code>--metadata &lt;file&gt;</code> - The file to use as SAML metadata</li>
+				</ul>
+				<h3 id="set-alias">set-alias</h3>
+				<p>The <code>set-alias</code> command enables you to configure an AWS account alias.</p>
+				<p>Valid options are:</p>
+				<ul>
+					<li><code>--name &lt;name&gt;</code> - Name of the alias to configure</li>
+				</ul>
 				<h1 id="changelog">Changelog</h1>
 				<h2 id="master">master</h2>
 				<ul>
 					<li>add <code>--script</code> option to run bash scripts directly</li>
 					<li>add <code>accounts</code> command to list AWS accounts</li>
+					<li>add <code>update-idp</code> command to manage SAML IdP</li>
+					<li>add <code>set-alias</code> command to manage SAML IdP</li>
 					<li>fix <code>clear</code> command</li>
 				</ul>
 				<h2 id="1-0-1">1.0.1</h2>
@@ -207,6 +222,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#getrolearn" class="tsd-kind-icon">get<wbr>Role<wbr>Arn</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#setalias" class="tsd-kind-icon">set<wbr>Alias</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#showaccounts" class="tsd-kind-icon">show<wbr>Accounts</a>
