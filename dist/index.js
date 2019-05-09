@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const AWS = require("aws-sdk");
 const fs_1 = require("fs");
 const minimist = require("minimist");
-const exec = require("native-exec");
 const agent = require("proxy-agent");
 const args = minimist(process.argv.slice(2), {
     default: {
@@ -23,7 +22,6 @@ const profile = args.profile;
 const externalId = args.externalId;
 const duration = args.duration;
 const roleSessionName = args.roleSessionName;
-const script = args.script;
 function getConfigObject() {
     return Object.assign({ retryDelayOptions: { base: 700 } }, (region && region !== '') && { region }, (process.env.HTTPS_PROXY || process.env.https_proxy) && {
         httpOptions: {
@@ -94,14 +92,9 @@ async function doAuth() {
     if (args.id) {
         await showId();
     }
-    if (args.script) {
-        exec('bash', Object.assign({}, awsEnv), [`${args.script}`]);
-    }
-    else {
-        for (const key in awsEnv) {
-            if (awsEnv.hasOwnProperty(key)) {
-                console.log(`export ${key}=${awsEnv[key]}`);
-            }
+    for (const key in awsEnv) {
+        if (awsEnv.hasOwnProperty(key)) {
+            console.log(`export ${key}=${awsEnv[key]}`);
         }
     }
 }

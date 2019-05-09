@@ -69,6 +69,7 @@
 				<p>To install this tool you need NodeJS and NPM installed on your machine.
 				You can then execute <code>npm install -g aws-authenticate</code> to install the <code>aws-authenticate</code> executable.</p>
 				<h2 id="examples">Examples</h2>
+				<h3 id="one-liners">One-liners</h3>
 				<p>To use a profile configured in your <code>~/.aws/config</code> file, issue the following command:</p>
 				<p><code>eval &quot;$(aws-authenticate auth --profile myprofile)&quot;</code></p>
 				<p>To assume a role using your default config you call it like:</p>
@@ -76,7 +77,37 @@
 				<p>To assume a role in another account, use:</p>
 				<p><code>eval &quot;$(aws-authenticate auth --role MyRole --roleAccount 123456789012)&quot;</code></p>
 				<p>To clear all AWS related environment variable and use the defaults, call:</p>
-				<p><code>eval $(aws-authenticate clear)</code></p>
+				<p><code>eval &quot;$(aws-authenticate clear)&quot;</code></p>
+				<h3 id="example-using-sub-shell">Example using sub-shell</h3>
+				<p>If you do not want to pollute your environment with settings, you can use a sub-shell to only configure AWS for several calls:</p>
+				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
+
+...
+(
+    <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">$(aws-authenticate auth --profile myprofile)</span>"</span>
+    aws s3 ls
+)
+...</code></pre>
+				<h3 id="looping-through-all-accounts">Looping through all accounts</h3>
+				<p>If you want to do something for a accounts in an organization, use the following code:</p>
+				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
+
+<span class="hljs-built_in">export</span> accounts=$(aws-authenticate accounts)
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${accounts}</span>"</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
+(
+    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 1)
+    safeName=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 4)
+
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Doing stuff for account <span class="hljs-variable">${id}</span> with safe name <span class="hljs-variable">${safeName}</span>"</span>
+
+    <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>"</span>
+
+    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">"<span class="hljs-variable">${safeName}</span>"</span>
+)
+
+<span class="hljs-keyword">done</span>
+</code></pre>
 				<h2 id="documentation">Documentation</h2>
 				<p><code>aws-authenticate &lt;command&gt; [options]</code></p>
 				<h3 id="auth">auth</h3>
@@ -91,7 +122,6 @@
 					<li><code>--duration &lt;seconds&gt;</code> - The number of seconds the temporary credentials should be valid. Default is 3600.</li>
 					<li><code>--roleSessionName &lt;name&gt;</code> - The name of the session of the assumed role. Defaults to <code>AWS-Auth-&lt;xyz&gt;</code> with <code>xyz</code> being the current milliseconds since epoch.</li>
 					<li><code>--id</code> - Print the final user information to the console for debugging purpose</li>
-					<li><code>--script</code> - Run the given script with the AWS env instead of printing it to console</li>
 				</ul>
 				<h3 id="id">id</h3>
 				<p>With the <code>id</code> command, the tool prints the currently configured IAM principal to the console</p>
@@ -123,6 +153,11 @@
 				</ul>
 				<h1 id="changelog">Changelog</h1>
 				<h2 id="master">master</h2>
+				<h2 id="1-2-0">1.2.0</h2>
+				<ul>
+					<li>remove <code>--script</code> option as it is completely broken. Use sub-shells instead. <strong>BREAKING CHANGE</strong></li>
+				</ul>
+				<h2 id="1-1-0">1.1.0</h2>
 				<ul>
 					<li>add <code>--script</code> option to run bash scripts directly</li>
 					<li>add <code>accounts</code> command to list AWS accounts</li>
@@ -207,9 +242,6 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#rolesessionname" class="tsd-kind-icon">role<wbr>Session<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#script" class="tsd-kind-icon">script</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#doauth" class="tsd-kind-icon">do<wbr>Auth</a>

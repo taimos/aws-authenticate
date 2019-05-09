@@ -11,6 +11,8 @@ You can then execute `npm install -g aws-authenticate` to install the `aws-authe
 
 ## Examples
 
+### One-liners
+
 To use a profile configured in your `~/.aws/config` file, issue the following command:
 
 `eval "$(aws-authenticate auth --profile myprofile)"`
@@ -25,7 +27,47 @@ To assume a role in another account, use:
 
 To clear all AWS related environment variable and use the defaults, call:
 
-`eval $(aws-authenticate clear)`
+`eval "$(aws-authenticate clear)"`
+
+### Example using sub-shell
+
+If you do not want to pollute your environment with settings, you can use a sub-shell to only configure AWS for several calls:
+
+```bash
+#!/bin/bash -e
+
+...
+(
+    eval "$(aws-authenticate auth --profile myprofile)"
+    aws s3 ls
+)
+...
+```
+
+### Looping through all accounts
+
+If you want to do something for a accounts in an organization, use the following code:
+
+```bash
+#!/bin/bash -e
+
+export accounts=$(aws-authenticate accounts)
+
+echo "${accounts}" | while read account; do
+(
+    id=$(echo "${account}" | cut -d ',' -f 1)
+    safeName=$(echo "${account}" | cut -d ',' -f 4)
+    
+    echo "Doing stuff for account ${id} with safe name ${safeName}"
+
+    eval "$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)"
+
+    aws-authenticate set-alias --name "${safeName}"
+)
+
+done
+
+```
 
 ## Documentation
 
@@ -45,7 +87,6 @@ Valid options are:
 * `--duration <seconds>` - The number of seconds the temporary credentials should be valid. Default is 3600.
 * `--roleSessionName <name>` - The name of the session of the assumed role. Defaults to `AWS-Auth-<xyz>` with `xyz` being the current milliseconds since epoch.
 * `--id` - Print the final user information to the console for debugging purpose
-* `--script` - Run the given script with the AWS env instead of printing it to console
 
 ### id
 
@@ -100,6 +141,9 @@ Valid options are:
 # Changelog
 
 ## master
+
+## 1.2.0
+* remove `--script` option as it is completely broken. Use sub-shells instead. **BREAKING CHANGE**
 
 ## 1.1.0
 * add `--script` option to run bash scripts directly
