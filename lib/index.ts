@@ -31,6 +31,7 @@ const profile = args.profile;
 const externalId = args.externalId;
 const duration = args.duration;
 const roleSessionName = args.roleSessionName;
+const roleSessionPolicy = args.roleSessionPolicy;
 
 function getConfigObject() : ConfigurationOptions & ConfigurationServicePlaceholders & APIVersions {
     return {
@@ -86,6 +87,8 @@ async function withRole() : Promise<void> {
             ExternalId: externalId,
             RoleArn: await getRoleArn(),
             RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}`,
+            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{arn: roleSessionPolicy}] },
+            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) },
         };
         console.log(`# Assuming IAM role ${request.RoleArn}`);
         try {
@@ -212,6 +215,7 @@ function showHelp() : void {
     console.log('--externalId <id>         - The external ID to use when assuming roles');
     console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
     console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');
+    console.log('--roleSessionPolicy <str> - The ARN or filename of the policy to use for the assumed session');
     console.log('--id                      - Print the final user information to the console for debugging purpose');
     console.log('--script                  - Run the given script with the AWS env instead of printing it to console');
     console.log('');
@@ -244,7 +248,7 @@ async function setAlias() : Promise<void> {
     if (listResult.AccountAliases && listResult.AccountAliases.includes(args.name)) {
         console.log(`Account alias already set ${args.name}`);
     } else {
-        await iamClient.createAccountAlias({AccountAlias: args.name}).promise();
+        await iamClient.createAccountAlias({ AccountAlias: args.name }).promise();
         console.log(`Created account alias ${args.name}`);
     }
 }

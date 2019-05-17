@@ -76,6 +76,8 @@
 				<p><code>eval &quot;$(aws-authenticate auth --role MyRole)&quot;</code></p>
 				<p>To assume a role in another account, use:</p>
 				<p><code>eval &quot;$(aws-authenticate auth --role MyRole --roleAccount 123456789012)&quot;</code></p>
+				<p>To assume a role in another account using a different policy, call:</p>
+				<p><code>eval &quot;$(aws-authenticate auth --role MyRole --roleAccount 123456789012 --roleSessionPolicy &#39;arn:aws:iam::aws:policy/AdministratorAccess&#39;)&quot;</code></p>
 				<p>To clear all AWS related environment variable and use the defaults, call:</p>
 				<p><code>eval &quot;$(aws-authenticate clear)&quot;</code></p>
 				<h3 id="example-using-sub-shell">Example using sub-shell</h3>
@@ -121,6 +123,7 @@
 					<li><code>--externalId &lt;id&gt;</code> - The external ID to use when assuming roles</li>
 					<li><code>--duration &lt;seconds&gt;</code> - The number of seconds the temporary credentials should be valid. Default is 3600.</li>
 					<li><code>--roleSessionName &lt;name&gt;</code> - The name of the session of the assumed role. Defaults to <code>AWS-Auth-&lt;xyz&gt;</code> with <code>xyz</code> being the current milliseconds since epoch.</li>
+					<li><code>--roleSessionPolicy &lt;str&gt;</code> - The ARN or filename of the policy to use for the assumed session</li>
 					<li><code>--id</code> - Print the final user information to the console for debugging purpose</li>
 				</ul>
 				<h3 id="id">id</h3>
@@ -153,6 +156,9 @@
 				</ul>
 				<h1 id="changelog">Changelog</h1>
 				<h2 id="master">master</h2>
+				<ul>
+					<li>add <code>--roleSessionPolicy</code> to provide IAM policies when assuming roles</li>
+				</ul>
 				<h2 id="1-2-0">1.2.0</h2>
 				<ul>
 					<li>remove <code>--script</code> option as it is completely broken. Use sub-shells instead. <strong>BREAKING CHANGE</strong></li>
@@ -242,6 +248,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#rolesessionname" class="tsd-kind-icon">role<wbr>Session<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#rolesessionpolicy" class="tsd-kind-icon">role<wbr>Session<wbr>Policy</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#doauth" class="tsd-kind-icon">do<wbr>Auth</a>

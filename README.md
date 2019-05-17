@@ -25,6 +25,10 @@ To assume a role in another account, use:
 
 `eval "$(aws-authenticate auth --role MyRole --roleAccount 123456789012)"`
 
+To assume a role in another account using a different policy, call:
+
+`eval "$(aws-authenticate auth --role MyRole --roleAccount 123456789012 --roleSessionPolicy 'arn:aws:iam::aws:policy/AdministratorAccess')"`
+
 To clear all AWS related environment variable and use the defaults, call:
 
 `eval "$(aws-authenticate clear)"`
@@ -86,6 +90,7 @@ Valid options are:
 * `--externalId <id>` - The external ID to use when assuming roles
 * `--duration <seconds>` - The number of seconds the temporary credentials should be valid. Default is 3600.
 * `--roleSessionName <name>` - The name of the session of the assumed role. Defaults to `AWS-Auth-<xyz>` with `xyz` being the current milliseconds since epoch.
+* `--roleSessionPolicy <str>` - The ARN or filename of the policy to use for the assumed session
 * `--id` - Print the final user information to the console for debugging purpose
 
 ### id
@@ -141,6 +146,7 @@ Valid options are:
 # Changelog
 
 ## master
+* add `--roleSessionPolicy` to provide IAM policies when assuming roles
 
 ## 1.2.0
 * remove `--script` option as it is completely broken. Use sub-shells instead. **BREAKING CHANGE**
