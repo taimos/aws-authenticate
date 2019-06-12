@@ -140,9 +140,21 @@ async function showAccounts() : Promise<void> {
         }
     } while (NextToken);
 
+    const tags : Map<string, Map<string, string>> = new Map();
+    if (args.tags && args.tags.length > 0) {
+        for (const acc of accounts) {
+            const res = await orgaClient.listTagsForResource({ResourceId: acc.Id}).promise();
+            tags[acc.Id] = new Map();
+            res.Tags.forEach((tag) => {
+                tags[acc.Id][tag.Key] = tag.Value;
+            });
+        }
+    }
+
     accounts.sort((a, b) => a.Id.localeCompare(b.Id)).forEach((acc) => {
         const safeName = acc.Name.replace(/[^A-Za-z0-9-]/g, '-').replace(/-+/g, '-').toLowerCase();
-        console.log(`${acc.Id},${acc.Email},${acc.Name},${safeName},${acc.Status}`);
+        const tagList = (args.tags && args.tags.length > 0) ? ',' + args.tags.split(',').map((key : string) => tags[acc.Id][key]).join(',') : '';
+        console.log(`${acc.Id},${acc.Email},${acc.Name},${safeName},${acc.Status}${tagList}`);
     });
 }
 
@@ -221,6 +233,7 @@ function showHelp() : void {
     console.log('');
     console.log('Options for \'accounts\'');
     console.log('--parent                  - Limit the account list to the given orga parent (OU)');
+    console.log('--tags key1,key2          - Show account tags as additional columns');
     console.log('');
     console.log('Options for \'set-alias\'');
     console.log('--name                    - Name of the alias to configure');

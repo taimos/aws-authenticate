@@ -31,7 +31,7 @@
     },
     "types": "dist/index.d.ts",
     "dependencies": {
-        "aws-sdk": "^2.457.0",
+        "aws-sdk": "^2.473.0",
         "minimist": "^1.2.0",
         "proxy-agent": "^3.1.0"
     },
@@ -51,9 +51,9 @@
         "nyc": "^13.3.0",
         "rimraf": "^2.6.3",
         "sinon": "^7.3.1",
-        "ts-node": "^8.1.0",
-        "tslint": "^5.16.0",
+        "ts-node": "^8.2.0",
+        "tslint": "^5.17.0",
         "typedoc": "^0.14.2",
-        "typescript": "^3.4.5"
+        "typescript": "^3.5.1"
     }
 }

@@ -73,6 +73,25 @@ done
 
 ```
 
+If you have a tag called `Alias` on your accounts, you can set the account alias with the following script:
+
+```bash
+#!/bin/bash -e
+
+export accounts=$(aws-authenticate accounts --tags Alias)
+
+echo "${accounts}" | while read account; do
+(
+    id=$(echo "${account}" | cut -d ',' -f 1)
+    alias=$(echo "${account}" | cut -d ',' -f 6)
+    eval "$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)"
+    aws-authenticate set-alias --name "${alias}"
+)
+
+done
+
+```
+
 ## Documentation
 
 `aws-authenticate <command> [options]`
@@ -125,6 +144,7 @@ The safe name is the name with only alphanumeric characters and the rest being r
 Valid options are:
 
 * `--parent <parent>` - Limit the account list to the given orga parent (OU)
+* `--tags key1,key2`  - Show account tags as additional columns
 
 ### update-idp
 
@@ -147,6 +167,7 @@ Valid options are:
 
 ## master
 * add `--roleSessionPolicy` to provide IAM policies when assuming roles
+* add `--tags` to account list
 
 ## 1.2.0
 * remove `--script` option as it is completely broken. Use sub-shells instead. **BREAKING CHANGE**
