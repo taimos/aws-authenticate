@@ -166,6 +166,8 @@ Valid options are:
 # Changelog
 
 ## master
+
+## 1.3.0
 * add `--roleSessionPolicy` to provide IAM policies when assuming roles
 * add `--tags` to account list
 
