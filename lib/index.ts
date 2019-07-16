@@ -19,6 +19,10 @@ const args = minimist(process.argv.slice(2), {
     default: {
         id: false,
     },
+    string: [
+        'roleAccount',
+        'externalId',
+    ],
 });
 
 const command = args._[0];

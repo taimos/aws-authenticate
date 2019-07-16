@@ -167,6 +167,9 @@ Valid options are:
 
 ## master
 
+## 1.3.1
+* fix `--roleAccount` when account id has leading zeros
+
 ## 1.3.0
 * add `--roleSessionPolicy` to provide IAM policies when assuming roles
 * add `--tags` to account list
