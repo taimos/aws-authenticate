@@ -28,11 +28,11 @@ const duration = args.duration;
 const roleSessionName = args.roleSessionName;
 const roleSessionPolicy = args.roleSessionPolicy;
 function getConfigObject() {
-    return Object.assign({ retryDelayOptions: { base: 700 } }, (region && region !== '') && { region }, (process.env.HTTPS_PROXY || process.env.https_proxy) && {
+    return Object.assign(Object.assign(Object.assign(Object.assign({ retryDelayOptions: { base: 700 } }, (region && region !== '') && { region }), (process.env.HTTPS_PROXY || process.env.https_proxy) && {
         httpOptions: {
             agent: agent(process.env.HTTPS_PROXY || process.env.https_proxy),
         },
-    }, profile && { credentials: new AWS.SharedIniFileCredentials({ profile }) }, awsEnv.AWS_ACCESS_KEY_ID && {
+    }), profile && { credentials: new AWS.SharedIniFileCredentials({ profile }) }), awsEnv.AWS_ACCESS_KEY_ID && {
         accessKeyId: awsEnv.AWS_ACCESS_KEY_ID,
         secretAccessKey: awsEnv.AWS_SECRET_ACCESS_KEY,
         sessionToken: awsEnv.AWS_SESSION_TOKEN,
@@ -65,7 +65,7 @@ async function getRoleArn() {
 async function withRole() {
     if (role && role !== '') {
         const sts = new AWS.STS(getConfigObject());
-        const request = Object.assign({ DurationSeconds: duration || 3600, ExternalId: externalId, RoleArn: await getRoleArn(), RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}` }, roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] }, roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: fs_1.readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) });
+        const request = Object.assign(Object.assign({ DurationSeconds: duration || 3600, ExternalId: externalId, RoleArn: await getRoleArn(), RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}` }, roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] }), roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: fs_1.readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) });
         console.log(`# Assuming IAM role ${request.RoleArn}`);
         try {
             const assumed = await sts.assumeRole(request).promise();
@@ -99,7 +99,7 @@ async function doAuth() {
     }
 }
 async function showAccounts() {
-    const orgaClient = new AWS.Organizations(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    const orgaClient = new AWS.Organizations(Object.assign(Object.assign({}, getConfigObject()), { region: 'us-east-1' }));
     const accounts = [];
     let NextToken;
     do {
@@ -136,7 +136,7 @@ async function updateIdp() {
         throw 'Missing idp metadata file. Use --metadata to specify the file.';
     }
     const metadata = fs_1.readFileSync(args.metadata, { encoding: 'UTF-8' });
-    const iamClient = new AWS.IAM(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    const iamClient = new AWS.IAM(Object.assign(Object.assign({}, getConfigObject()), { region: 'us-east-1' }));
     console.log(`Checking for identity provider ${name}`);
     const listResult = await iamClient.listSAMLProviders().promise();
     let providerARN;
@@ -218,7 +218,7 @@ async function setAlias() {
     if (!args.name) {
         throw 'Missing alias name. Use --name to specify it.';
     }
-    const iamClient = new AWS.IAM(Object.assign({}, getConfigObject(), { region: 'us-east-1' }));
+    const iamClient = new AWS.IAM(Object.assign(Object.assign({}, getConfigObject()), { region: 'us-east-1' }));
     console.log(`Checking for account alias ${args.name}`);
     const listResult = await iamClient.listAccountAliases().promise();
     if (listResult.AccountAliases && listResult.AccountAliases.includes(args.name)) {

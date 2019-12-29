@@ -43,7 +43,7 @@ function getConfigObject() : ConfigurationOptions & ConfigurationServicePlacehol
         ...(region && region !== '') && { region },
         ...(process.env.HTTPS_PROXY || process.env.https_proxy) && {
             httpOptions: {
-                agent: agent(process.env.HTTPS_PROXY || process.env.https_proxy) as Agent,
+                agent: agent(process.env.HTTPS_PROXY || process.env.https_proxy) as any as Agent,
             },
         },
         ...profile && { credentials: new AWS.SharedIniFileCredentials({ profile }) },

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>aws-authenticate</title>
+	<title>aws-authenticate - v1.3.1</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">aws-authenticate</a>
+					<a href="index.html" class="title">aws-authenticate - v1.3.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> aws-authenticate</h1>
+			<h1> aws-authenticate - v1.3.1</h1>
 		</div>
 	</div>
 </header>
@@ -62,14 +62,22 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="aws-authenticate">AWS Authenticate</h1>
+				<a href="#aws-authenticate" id="aws-authenticate" style="color: inherit; text-decoration: none;">
+					<h1>AWS Authenticate</h1>
+				</a>
 				<p>This CLI tool helps you to configure your AWS access in CI/CD environments. You can set the region, the IAM profile to use or assume IAM roles with one CLI call.</p>
 				<p>The tool prints environment variables to the console to use in subsequent calls. By using <code>eval</code> you can set the environment in one call.</p>
-				<h2 id="how-to-install">How to install</h2>
+				<a href="#how-to-install" id="how-to-install" style="color: inherit; text-decoration: none;">
+					<h2>How to install</h2>
+				</a>
 				<p>To install this tool you need NodeJS and NPM installed on your machine.
 				You can then execute <code>npm install -g aws-authenticate</code> to install the <code>aws-authenticate</code> executable.</p>
-				<h2 id="examples">Examples</h2>
-				<h3 id="one-liners">One-liners</h3>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h2>Examples</h2>
+				</a>
+				<a href="#one-liners" id="one-liners" style="color: inherit; text-decoration: none;">
+					<h3>One-liners</h3>
+				</a>
 				<p>To use a profile configured in your <code>~/.aws/config</code> file, issue the following command:</p>
 				<p><code>eval &quot;$(aws-authenticate auth --profile myprofile)&quot;</code></p>
 				<p>To assume a role using your default config you call it like:</p>
@@ -80,7 +88,9 @@
 				<p><code>eval &quot;$(aws-authenticate auth --role MyRole --roleAccount 123456789012 --roleSessionPolicy &#39;arn:aws:iam::aws:policy/AdministratorAccess&#39;)&quot;</code></p>
 				<p>To clear all AWS related environment variable and use the defaults, call:</p>
 				<p><code>eval &quot;$(aws-authenticate clear)&quot;</code></p>
-				<h3 id="example-using-sub-shell">Example using sub-shell</h3>
+				<a href="#example-using-sub-shell" id="example-using-sub-shell" style="color: inherit; text-decoration: none;">
+					<h3>Example using sub-shell</h3>
+				</a>
 				<p>If you do not want to pollute your environment with settings, you can use a sub-shell to only configure AWS for several calls:</p>
 				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
 
@@ -90,7 +100,9 @@
     aws s3 ls
 )
 ...</code></pre>
-				<h3 id="looping-through-all-accounts">Looping through all accounts</h3>
+				<a href="#looping-through-all-accounts" id="looping-through-all-accounts" style="color: inherit; text-decoration: none;">
+					<h3>Looping through all accounts</h3>
+				</a>
 				<p>If you want to do something for a accounts in an organization, use the following code:</p>
 				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
 
@@ -125,9 +137,13 @@
 
 <span class="hljs-keyword">done</span>
 </code></pre>
-				<h2 id="documentation">Documentation</h2>
+				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+					<h2>Documentation</h2>
+				</a>
 				<p><code>aws-authenticate &lt;command&gt; [options]</code></p>
-				<h3 id="auth">auth</h3>
+				<a href="#auth" id="auth" style="color: inherit; text-decoration: none;">
+					<h3>auth</h3>
+				</a>
 				<p>The <code>auth</code> command is used to configure credentials or assume roles.</p>
 				<p>Valid options are:</p>
 				<ul>
@@ -141,13 +157,19 @@
 					<li><code>--roleSessionPolicy &lt;str&gt;</code> - The ARN or filename of the policy to use for the assumed session</li>
 					<li><code>--id</code> - Print the final user information to the console for debugging purpose</li>
 				</ul>
-				<h3 id="id">id</h3>
+				<a href="#id" id="id" style="color: inherit; text-decoration: none;">
+					<h3>id</h3>
+				</a>
 				<p>With the <code>id</code> command, the tool prints the currently configured IAM principal to the console</p>
 				<pre><code class="language-bash">$ aws-authenticate id
 <span class="hljs-comment"># Account: 123456789012 - User: arn:aws:iam::123456789012:user/johndoe</span></code></pre>
-				<h3 id="clear">clear</h3>
+				<a href="#clear" id="clear" style="color: inherit; text-decoration: none;">
+					<h3>clear</h3>
+				</a>
 				<p>The <code>clear</code> command creates a bash snippet to clear all AWS related environment vafriables.</p>
-				<h3 id="accounts">accounts</h3>
+				<a href="#accounts" id="accounts" style="color: inherit; text-decoration: none;">
+					<h3>accounts</h3>
+				</a>
 				<p>The <code>accounts</code> command lists AWS accounts withing the currect organization.</p>
 				<p>Accounts are printed one account per line with the following fields in a CSV format.</p>
 				<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">EMAIL</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">NAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">SAFENAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">STATUS</span>&gt;</span></code></pre><p>The safe name is the name with only alphanumeric characters and the rest being replaced with dashes.</p>
@@ -157,35 +179,51 @@
 					<li><code>--parent &lt;parent&gt;</code> - Limit the account list to the given orga parent (OU)</li>
 					<li><code>--tags key1,key2</code>  - Show account tags as additional columns</li>
 				</ul>
-				<h3 id="update-idp">update-idp</h3>
+				<a href="#update-idp" id="update-idp" style="color: inherit; text-decoration: none;">
+					<h3>update-idp</h3>
+				</a>
 				<p>The <code>update-idp</code> command is used to create or update the given SAML identity provider</p>
 				<p>Valid options are:</p>
 				<ul>
 					<li><code>--name &lt;name&gt;</code> - Name of the IdP to configure. Defaults to <code>SAML</code></li>
 					<li><code>--metadata &lt;file&gt;</code> - The file to use as SAML metadata</li>
 				</ul>
-				<h3 id="set-alias">set-alias</h3>
+				<a href="#set-alias" id="set-alias" style="color: inherit; text-decoration: none;">
+					<h3>set-alias</h3>
+				</a>
 				<p>The <code>set-alias</code> command enables you to configure an AWS account alias.</p>
 				<p>Valid options are:</p>
 				<ul>
 					<li><code>--name &lt;name&gt;</code> - Name of the alias to configure</li>
 				</ul>
-				<h1 id="changelog">Changelog</h1>
-				<h2 id="master">master</h2>
-				<h2 id="1-3-1">1.3.1</h2>
+				<a href="#changelog" id="changelog" style="color: inherit; text-decoration: none;">
+					<h1>Changelog</h1>
+				</a>
+				<a href="#master" id="master" style="color: inherit; text-decoration: none;">
+					<h2>master</h2>
+				</a>
+				<a href="#131" id="131" style="color: inherit; text-decoration: none;">
+					<h2>1.3.1</h2>
+				</a>
 				<ul>
 					<li>fix <code>--roleAccount</code> when account id has leading zeros</li>
 				</ul>
-				<h2 id="1-3-0">1.3.0</h2>
+				<a href="#130" id="130" style="color: inherit; text-decoration: none;">
+					<h2>1.3.0</h2>
+				</a>
 				<ul>
 					<li>add <code>--roleSessionPolicy</code> to provide IAM policies when assuming roles</li>
 					<li>add <code>--tags</code> to account list</li>
 				</ul>
-				<h2 id="1-2-0">1.2.0</h2>
+				<a href="#120" id="120" style="color: inherit; text-decoration: none;">
+					<h2>1.2.0</h2>
+				</a>
 				<ul>
 					<li>remove <code>--script</code> option as it is completely broken. Use sub-shells instead. <strong>BREAKING CHANGE</strong></li>
 				</ul>
-				<h2 id="1-1-0">1.1.0</h2>
+				<a href="#110" id="110" style="color: inherit; text-decoration: none;">
+					<h2>1.1.0</h2>
+				</a>
 				<ul>
 					<li>add <code>--script</code> option to run bash scripts directly</li>
 					<li>add <code>accounts</code> command to list AWS accounts</li>
@@ -193,39 +231,55 @@
 					<li>add <code>set-alias</code> command to manage SAML IdP</li>
 					<li>fix <code>clear</code> command</li>
 				</ul>
-				<h2 id="1-0-1">1.0.1</h2>
+				<a href="#101" id="101" style="color: inherit; text-decoration: none;">
+					<h2>1.0.1</h2>
+				</a>
 				<ul>
 					<li>add README and <code>help</code> command</li>
 				</ul>
-				<h2 id="1-0-0">1.0.0</h2>
+				<a href="#100" id="100" style="color: inherit; text-decoration: none;">
+					<h2>1.0.0</h2>
+				</a>
 				<ul>
 					<li>Initial project implementation</li>
 				</ul>
-				<h1 id="contribute">Contribute</h1>
-				<h2 id="did-you-find-a-bug-">Did you find a bug?</h2>
+				<a href="#contribute" id="contribute" style="color: inherit; text-decoration: none;">
+					<h1>Contribute</h1>
+				</a>
+				<a href="#did-you-find-a-bug" id="did-you-find-a-bug" style="color: inherit; text-decoration: none;">
+					<h2>Did you find a bug?</h2>
+				</a>
 				<ul>
 					<li><p><strong>Ensure the bug was not already reported</strong> by searching on GitHub under <a href="https://github.com/taimos/aws-authenticate/issues">Issues</a>.</p>
 					</li>
 					<li><p>If you&#39;re unable to find an open issue addressing the problem, <a href="https://github.com/taimos/aws-authenticate/issues/new">open a new one</a>. Be sure to include a <strong>title and clear description</strong>, as much relevant information as possible, and a <strong>code sample</strong> demonstrating the expected behavior that is not occurring.</p>
 					</li>
 				</ul>
-				<h2 id="did-you-write-a-patch-that-fixes-a-bug-">Did you write a patch that fixes a bug?</h2>
+				<a href="#did-you-write-a-patch-that-fixes-a-bug" id="did-you-write-a-patch-that-fixes-a-bug" style="color: inherit; text-decoration: none;">
+					<h2>Did you write a patch that fixes a bug?</h2>
+				</a>
 				<ul>
 					<li><p>Open a new GitHub pull request with the patch.</p>
 					</li>
 					<li><p>Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.</p>
 					</li>
 				</ul>
-				<h2 id="did-you-fix-whitespace-format-code-or-make-a-purely-cosmetic-patch-">Did you fix whitespace, format code, or make a purely cosmetic patch?</h2>
+				<a href="#did-you-fix-whitespace-format-code-or-make-a-purely-cosmetic-patch" id="did-you-fix-whitespace-format-code-or-make-a-purely-cosmetic-patch" style="color: inherit; text-decoration: none;">
+					<h2>Did you fix whitespace, format code, or make a purely cosmetic patch?</h2>
+				</a>
 				<p>Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability will normally not be accepted.</p>
-				<h2 id="do-you-intend-to-add-a-new-feature-or-change-an-existing-one-">Do you intend to add a new feature or change an existing one?</h2>
+				<a href="#do-you-intend-to-add-a-new-feature-or-change-an-existing-one" id="do-you-intend-to-add-a-new-feature-or-change-an-existing-one" style="color: inherit; text-decoration: none;">
+					<h2>Do you intend to add a new feature or change an existing one?</h2>
+				</a>
 				<ul>
 					<li><p>Suggest your change under <a href="https://github.com/taimos/aws-authenticate/issues">Issues</a>.</p>
 					</li>
 					<li><p>Do not open a pull request on GitHub until you have collected positive feedback about the change.</p>
 					</li>
 				</ul>
-				<h2 id="do-you-want-to-contribute-to-the-aws-authenticate-documentation-">Do you want to contribute to the aws-authenticate documentation?</h2>
+				<a href="#do-you-want-to-contribute-to-the-aws-authenticate-documentation" id="do-you-want-to-contribute-to-the-aws-authenticate-documentation" style="color: inherit; text-decoration: none;">
+					<h2>Do you want to contribute to the aws-authenticate documentation?</h2>
+				</a>
 				<ul>
 					<li>Just file a PR with your recommended changes</li>
 				</ul>
@@ -327,6 +381,7 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -375,7 +430,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
