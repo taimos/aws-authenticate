@@ -179,9 +179,9 @@ function showHelp() {
     console.log('aws-authenticate <command> [options]');
     console.log('');
     console.log('Commands:');
-    console.log('auth  - used to configure credentials or assume roles');
-    console.log('id    - prints the currently configured IAM principal to the console');
-    console.log('clear - creates a bash snippet to clear all AWS related environment variables');
+    console.log('auth  - configure credentials or assume roles');
+    console.log('id    - print the currently configured IAM principal to the console');
+    console.log('clear - creat a bash snippet to clear all AWS related environment variables');
     console.log('accounts - list all AWS accounts for the current organization');
     console.log('set-alias - set the alias for the current AWS account');
     console.log('update-idp - update the given SAML identity provider');

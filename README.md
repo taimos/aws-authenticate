@@ -167,6 +167,9 @@ Valid options are:
 
 ## master
 
+## 1.4.0
+* update deps
+
 ## 1.3.1
 * fix `--roleAccount` when account id has leading zeros
 
