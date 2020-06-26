@@ -95,7 +95,7 @@ async function withRole() : Promise<void> {
             RoleArn: await getRoleArn(),
             RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}`,
             ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] },
-            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) },
+            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: readFileSync(roleSessionPolicy, { encoding: 'utf8' }) },
         };
         console.log(`# Assuming IAM role ${request.RoleArn}`);
         try {
@@ -195,7 +195,7 @@ async function updateIdp() : Promise<void> {
     if (!args.metadata) {
         throw 'Missing idp metadata file. Use --metadata to specify the file.';
     }
-    const metadata = readFileSync(args.metadata, { encoding: 'UTF-8' });
+    const metadata = readFileSync(args.metadata, { encoding: 'utf8' });
 
     const iamClient = new AWS.IAM({ ...getConfigObject(), region: 'us-east-1' });
 

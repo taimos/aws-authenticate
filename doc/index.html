@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>aws-authenticate</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for aws-authenticate">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -92,11 +92,11 @@
 					<h3>Example using sub-shell</h3>
 				</a>
 				<p>If you do not want to pollute your environment with settings, you can use a sub-shell to only configure AWS for several calls:</p>
-				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
 
 ...
 (
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">$(aws-authenticate auth --profile myprofile)</span>"</span>
+    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --profile myprofile)</span>&quot;</span>
     aws s3 ls
 )
 ...</code></pre>
@@ -104,35 +104,35 @@
 					<h3>Looping through all accounts</h3>
 				</a>
 				<p>If you want to do something for a accounts in an organization, use the following code:</p>
-				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
 
 <span class="hljs-built_in">export</span> accounts=$(aws-authenticate accounts)
 
-<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${accounts}</span>"</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${accounts}</span>&quot;</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
 (
-    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 1)
-    safeName=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 4)
+    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 1)
+    safeName=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 4)
 
-    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Doing stuff for account <span class="hljs-variable">${id}</span> with safe name <span class="hljs-variable">${safeName}</span>"</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Doing stuff for account <span class="hljs-variable">${id}</span> with safe name <span class="hljs-variable">${safeName}</span>&quot;</span>
 
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>"</span>
+    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>&quot;</span>
 
-    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">"<span class="hljs-variable">${safeName}</span>"</span>
+    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">&quot;<span class="hljs-variable">${safeName}</span>&quot;</span>
 )
 
 <span class="hljs-keyword">done</span>
 </code></pre>
 				<p>If you have a tag called <code>Alias</code> on your accounts, you can set the account alias with the following script:</p>
-				<pre><code class="language-bash"><span class="hljs-comment">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
 
 <span class="hljs-built_in">export</span> accounts=$(aws-authenticate accounts --tags Alias)
 
-<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${accounts}</span>"</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${accounts}</span>&quot;</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
 (
-    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 1)
-    <span class="hljs-built_in">alias</span>=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${account}</span>"</span> | cut -d <span class="hljs-string">','</span> -f 6)
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>"</span>
-    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">"<span class="hljs-variable">${alias}</span>"</span>
+    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 1)
+    <span class="hljs-built_in">alias</span>=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 6)
+    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>&quot;</span>
+    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">&quot;<span class="hljs-variable">${alias}</span>&quot;</span>
 )
 
 <span class="hljs-keyword">done</span>
@@ -389,59 +389,6 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
 		</div>
 	</div>
 </footer>

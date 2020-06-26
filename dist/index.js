@@ -68,7 +68,7 @@ async function getRoleArn() {
 async function withRole() {
     if (role && role !== '') {
         const sts = new AWS.STS(getConfigObject());
-        const request = Object.assign(Object.assign({ DurationSeconds: duration || 3600, ExternalId: externalId, RoleArn: await getRoleArn(), RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}` }, roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] }), roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: fs_1.readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) });
+        const request = Object.assign(Object.assign({ DurationSeconds: duration || 3600, ExternalId: externalId, RoleArn: await getRoleArn(), RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}` }, roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] }), roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: fs_1.readFileSync(roleSessionPolicy, { encoding: 'utf8' }) });
         console.log(`# Assuming IAM role ${request.RoleArn}`);
         try {
             const assumed = await sts.assumeRole(request).promise();
@@ -162,7 +162,7 @@ async function updateIdp() {
     if (!args.metadata) {
         throw 'Missing idp metadata file. Use --metadata to specify the file.';
     }
-    const metadata = fs_1.readFileSync(args.metadata, { encoding: 'UTF-8' });
+    const metadata = fs_1.readFileSync(args.metadata, { encoding: 'utf8' });
     const iamClient = new AWS.IAM(Object.assign(Object.assign({}, getConfigObject()), { region: 'us-east-1' }));
     console.log(`Checking for identity provider ${name}`);
     const listResult = await iamClient.listSAMLProviders().promise();
