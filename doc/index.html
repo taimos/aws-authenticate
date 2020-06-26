@@ -151,6 +151,7 @@
 					<li><code>--roleAccount &lt;accountId&gt;</code> - The AWS account owning the role to assume. If not specified, your current account is used.</li>
 					<li><code>--region &lt;region&gt;</code> - The region to configure for subsequent calls</li>
 					<li><code>--profile &lt;profile&gt;</code> - The profile configured in <code>~/.aws/config</code> to use</li>
+					<li><code>--targetProfile &lt;profile&gt;</code> - The profile in <code>~/.aws/config</code> to write the new credentials to</li>
 					<li><code>--externalId &lt;id&gt;</code> - The external ID to use when assuming roles</li>
 					<li><code>--duration &lt;seconds&gt;</code> - The number of seconds the temporary credentials should be valid. Default is 3600.</li>
 					<li><code>--roleSessionName &lt;name&gt;</code> - The name of the session of the assumed role. Defaults to <code>AWS-Auth-&lt;xyz&gt;</code> with <code>xyz</code> being the current milliseconds since epoch.</li>
@@ -334,6 +335,9 @@
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#rolesessionpolicy" class="tsd-kind-icon">role<wbr>Session<wbr>Policy</a>
 					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#targetprofile" class="tsd-kind-icon">target<wbr>Profile</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#doauth" class="tsd-kind-icon">do<wbr>Auth</a>
 					</li>
@@ -342,6 +346,12 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getconfigobject" class="tsd-kind-icon">get<wbr>Config<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getdefaultfilepath" class="tsd-kind-icon">get<wbr>Default<wbr>File<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#gethomedir" class="tsd-kind-icon">get<wbr>Home<wbr>Dir</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getrolearn" class="tsd-kind-icon">get<wbr>Role<wbr>Arn</a>

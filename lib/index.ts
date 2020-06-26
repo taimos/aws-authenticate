@@ -10,9 +10,11 @@ import { Account } from 'aws-sdk/clients/organizations';
 import { AssumeRoleRequest } from 'aws-sdk/clients/sts';
 import { APIVersions, ConfigurationOptions } from 'aws-sdk/lib/config';
 import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
-import { readFileSync } from 'fs';
+import { appendFileSync, readFileSync } from 'fs';
 import { Agent } from 'http';
 import * as minimist from 'minimist';
+import * as os from 'os';
+import * as path from 'path';
 import * as agent from 'proxy-agent';
 
 const args = minimist(process.argv.slice(2), {
@@ -32,6 +34,7 @@ const role = args.role;
 const roleAccount = args.roleAccount;
 const region = args.region;
 const profile = args.profile;
+const targetProfile = args.targetProfile;
 const externalId = args.externalId;
 const duration = args.duration;
 const roleSessionName = args.roleSessionName;
@@ -91,7 +94,7 @@ async function withRole() : Promise<void> {
             ExternalId: externalId,
             RoleArn: await getRoleArn(),
             RoleSessionName: roleSessionName || `AWS-Auth-${new Date().getTime()}`,
-            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{arn: roleSessionPolicy}] },
+            ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') >= 0 && { PolicyArns: [{ arn: roleSessionPolicy }] },
             ...roleSessionPolicy && roleSessionPolicy.lastIndexOf('arn:') < 0 && { Policy: readFileSync(roleSessionPolicy, { encoding: 'UTF-8' }) },
         };
         console.log(`# Assuming IAM role ${request.RoleArn}`);
@@ -121,11 +124,36 @@ async function doAuth() : Promise<void> {
     if (args.id) {
         await showId();
     }
-    for (const key in awsEnv) {
-        if (awsEnv.hasOwnProperty(key)) {
-            console.log(`export ${key}=${awsEnv[key]}`);
+    if (targetProfile) {
+        let data = `\n[${targetProfile}]\n`;
+        data += `region=${region ?? process.env.AWS_REGION}\n`;
+        data += `aws_access_key_id=${awsEnv.AWS_ACCESS_KEY_ID}\n`;
+        data += `aws_secret_access_key=${awsEnv.AWS_SECRET_ACCESS_KEY}\n`;
+        data += `aws_session_token=${awsEnv.AWS_SESSION_TOKEN}\n`;
+        appendFileSync(getDefaultFilePath(), data);
+        console.log(`# Wrote credentials to profile ${targetProfile}. Use with "--profile ${targetProfile}"`);
+    } else {
+        for (const key in awsEnv) {
+            if (awsEnv.hasOwnProperty(key)) {
+                console.log(`export ${key}=${awsEnv[key]}`);
+            }
         }
     }
+}
+
+function getDefaultFilePath() : string {
+    return path.join(getHomeDir(), '.aws', 'credentials');
+}
+
+function getHomeDir() : string {
+    const home = process.env.HOME || process.env.USERPROFILE || (process.env.HOMEPATH ? ((process.env.HOMEDRIVE || 'C:/') + process.env.HOMEPATH) : null);
+    if (home) {
+        return home;
+    }
+    if (typeof os.homedir === 'function') {
+        return os.homedir();
+    }
+    throw new Error('Cannot load credentials, HOME path not set');
 }
 
 async function showAccounts() : Promise<void> {
@@ -147,7 +175,7 @@ async function showAccounts() : Promise<void> {
     const tags : Map<string, Map<string, string>> = new Map();
     if (args.tags && args.tags.length > 0) {
         for (const acc of accounts) {
-            const res = await orgaClient.listTagsForResource({ResourceId: acc.Id}).promise();
+            const res = await orgaClient.listTagsForResource({ ResourceId: acc.Id }).promise();
             tags[acc.Id] = new Map();
             res.Tags.forEach((tag) => {
                 tags[acc.Id][tag.Key] = tag.Value;
@@ -228,6 +256,7 @@ function showHelp() : void {
     console.log('--roleAccount <accountId> - The AWS account owning the role to assume. If not specified, your current account is used.');
     console.log('--region <region>         - The region to configure for subsequent calls');
     console.log('--profile <profile>       - The profile configured in \'~/.aws/config\' to use');
+    console.log('--targetProfile <profile> - The profile in `~/.aws/config` to write the new credentials to');
     console.log('--externalId <id>         - The external ID to use when assuming roles');
     console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
     console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');

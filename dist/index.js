@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const AWS = require("aws-sdk");
 const fs_1 = require("fs");
 const minimist = require("minimist");
+const os = require("os");
+const path = require("path");
 const agent = require("proxy-agent");
 const args = minimist(process.argv.slice(2), {
     default: {
@@ -23,6 +25,7 @@ const role = args.role;
 const roleAccount = args.roleAccount;
 const region = args.region;
 const profile = args.profile;
+const targetProfile = args.targetProfile;
 const externalId = args.externalId;
 const duration = args.duration;
 const roleSessionName = args.roleSessionName;
@@ -92,11 +95,35 @@ async function doAuth() {
     if (args.id) {
         await showId();
     }
-    for (const key in awsEnv) {
-        if (awsEnv.hasOwnProperty(key)) {
-            console.log(`export ${key}=${awsEnv[key]}`);
+    if (targetProfile) {
+        let data = `\n[${targetProfile}]\n`;
+        data += `region=${region !== null && region !== void 0 ? region : process.env.AWS_REGION}\n`;
+        data += `aws_access_key_id=${awsEnv.AWS_ACCESS_KEY_ID}\n`;
+        data += `aws_secret_access_key=${awsEnv.AWS_SECRET_ACCESS_KEY}\n`;
+        data += `aws_session_token=${awsEnv.AWS_SESSION_TOKEN}\n`;
+        fs_1.appendFileSync(getDefaultFilePath(), data);
+        console.log(`# Wrote credentials to profile ${targetProfile}. Use with "--profile ${targetProfile}"`);
+    }
+    else {
+        for (const key in awsEnv) {
+            if (awsEnv.hasOwnProperty(key)) {
+                console.log(`export ${key}=${awsEnv[key]}`);
+            }
         }
     }
+}
+function getDefaultFilePath() {
+    return path.join(getHomeDir(), '.aws', 'credentials');
+}
+function getHomeDir() {
+    const home = process.env.HOME || process.env.USERPROFILE || (process.env.HOMEPATH ? ((process.env.HOMEDRIVE || 'C:/') + process.env.HOMEPATH) : null);
+    if (home) {
+        return home;
+    }
+    if (typeof os.homedir === 'function') {
+        return os.homedir();
+    }
+    throw new Error('Cannot load credentials, HOME path not set');
 }
 async function showAccounts() {
     const orgaClient = new AWS.Organizations(Object.assign(Object.assign({}, getConfigObject()), { region: 'us-east-1' }));
@@ -191,6 +218,7 @@ function showHelp() {
     console.log('--roleAccount <accountId> - The AWS account owning the role to assume. If not specified, your current account is used.');
     console.log('--region <region>         - The region to configure for subsequent calls');
     console.log('--profile <profile>       - The profile configured in \'~/.aws/config\' to use');
+    console.log('--targetProfile <profile> - The profile in `~/.aws/config` to write the new credentials to');
     console.log('--externalId <id>         - The external ID to use when assuming roles');
     console.log('--duration <seconds>      - The number of seconds the temporary credentials should be valid. Default is 3600.');
     console.log('--roleSessionName <name>  - The name of the session of the assumed role. Defaults to \'AWS-Auth-<xyz>\' with xyz being the current milliseconds since epoch.');

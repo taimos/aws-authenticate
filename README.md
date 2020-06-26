@@ -106,6 +106,7 @@ Valid options are:
 * `--roleAccount <accountId>` - The AWS account owning the role to assume. If not specified, your current account is used.
 * `--region <region>` - The region to configure for subsequent calls
 * `--profile <profile>` - The profile configured in `~/.aws/config` to use
+* `--targetProfile <profile>` - The profile in `~/.aws/config` to write the new credentials to
 * `--externalId <id>` - The external ID to use when assuming roles
 * `--duration <seconds>` - The number of seconds the temporary credentials should be valid. Default is 3600.
 * `--roleSessionName <name>` - The name of the session of the assumed role. Defaults to `AWS-Auth-<xyz>` with `xyz` being the current milliseconds since epoch.
