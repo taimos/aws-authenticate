@@ -166,7 +166,11 @@ Valid options are:
 
 # Changelog
 
-## master
+## HEAD
+
+## 1.5.0
+* update deps
+* add support to write auth to new profile
 
 ## 1.4.0
 * update deps
