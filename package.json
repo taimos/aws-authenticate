@@ -23,7 +23,7 @@
         "build": "npm-run-all clean compile lint test doc",
         "preversion": "npm-run-all clean lint test",
         "version": "npm run build && git add -A",
-        "postversion": "git push && npm publish"
+        "postversion": "git push && git push --tags && npm publish"
     },
     "main": "dist/index.js",
     "bin": {
