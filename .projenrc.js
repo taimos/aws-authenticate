@@ -1,5 +1,5 @@
 const { TaimosTypescriptLibrary } = require('@taimos/projen');
-const { DependenciesUpgradeMechanism } = require('projen');
+const { DependenciesUpgradeMechanism, Gitpod, DevEnvironmentDockerImage } = require('projen');
 
 const project = new TaimosTypescriptLibrary({
   defaultReleaseBranch: 'main',
@@ -17,6 +17,7 @@ const project = new TaimosTypescriptLibrary({
     'minimist',
     'proxy-agent',
   ],
+  gitpod: false,
   devDeps: [
     '@taimos/projen',
     'ts-node',
@@ -46,6 +47,14 @@ const project = new TaimosTypescriptLibrary({
 
 
 * **Other information**:`],
+});
+
+const gp = new Gitpod(project, {
+  dockerImage: DevEnvironmentDockerImage.fromImage('taimos/gitpod'),
+});
+gp.addCustomTask({
+  init: 'yarn install --check-files --frozen-lockfile',
+  command: 'npx projen build',
 });
 
 project.synth();

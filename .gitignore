@@ -2,7 +2,6 @@
 !/.gitattributes
 !/.projen/tasks.json
 !/.projen/deps.json
-!/.gitpod.yml
 !/.github/workflows/stale.yml
 !/package.json
 !/LICENSE
@@ -48,4 +47,5 @@ junit.xml
 !/tsconfig.jest.json
 !/.eslintrc.json
 !/tsconfig.eslint.json
+!/.gitpod.yml
 !/.github/workflows/release.yml
