@@ -166,7 +166,9 @@ Valid options are:
 
 # Changelog
 
-## HEAD
+## NEWER
+
+See Github releases
 
 ## 1.5.0
 * update deps

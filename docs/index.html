@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for aws-authenticate">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -49,11 +50,6 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
 			<h1>aws-authenticate</h1>
 		</div>
 	</div>
@@ -92,50 +88,53 @@
 					<h3>Example using sub-shell</h3>
 				</a>
 				<p>If you do not want to pollute your environment with settings, you can use a sub-shell to only configure AWS for several calls:</p>
-				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span style="color: #008000">#!/bin/bash -e</span>
 
-...
-(
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --profile myprofile)</span>&quot;</span>
-    aws s3 ls
-)
-...</code></pre>
+<span style="color: #000000">...</span>
+<span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #795E26">eval</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;$(aws-authenticate auth --profile myprofile)&quot;</span>
+<span style="color: #000000">    aws s3 ls</span>
+<span style="color: #000000">)</span>
+<span style="color: #000000">...</span>
+</code></pre>
 				<a href="#looping-through-all-accounts" id="looping-through-all-accounts" style="color: inherit; text-decoration: none;">
 					<h3>Looping through all accounts</h3>
 				</a>
 				<p>If you want to do something for a accounts in an organization, use the following code:</p>
-				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span style="color: #008000">#!/bin/bash -e</span>
 
-<span class="hljs-built_in">export</span> accounts=$(aws-authenticate accounts)
+<span style="color: #0000FF">export</span><span style="color: #000000"> accounts=</span><span style="color: #A31515">$(aws-authenticate accounts)</span>
 
-<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${accounts}</span>&quot;</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
-(
-    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 1)
-    safeName=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 4)
+<span style="color: #795E26">echo</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;</span><span style="color: #001080">${accounts}</span><span style="color: #A31515">&quot;</span><span style="color: #000000"> | </span><span style="color: #AF00DB">while</span><span style="color: #000000"> </span><span style="color: #795E26">read</span><span style="color: #000000"> account; </span><span style="color: #AF00DB">do</span>
+<span style="color: #000000">(</span>
+<span style="color: #000000">    id=</span><span style="color: #A31515">$(echo &quot;</span><span style="color: #001080">${account}</span><span style="color: #A31515">&quot; </span><span style="color: #000000">|</span><span style="color: #A31515"> cut -d &#039;,&#039; -f 1)</span>
+<span style="color: #000000">    safeName=</span><span style="color: #A31515">$(echo &quot;</span><span style="color: #001080">${account}</span><span style="color: #A31515">&quot; </span><span style="color: #000000">|</span><span style="color: #A31515"> cut -d &#039;,&#039; -f 4)</span>
+<span style="color: #000000">    </span>
+<span style="color: #000000">    </span><span style="color: #795E26">echo</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Doing stuff for account </span><span style="color: #001080">${id}</span><span style="color: #A31515"> with safe name </span><span style="color: #001080">${safeName}</span><span style="color: #A31515">&quot;</span>
 
-    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Doing stuff for account <span class="hljs-variable">${id}</span> with safe name <span class="hljs-variable">${safeName}</span>&quot;</span>
+<span style="color: #000000">    </span><span style="color: #795E26">eval</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;$(aws-authenticate auth --roleAccount </span><span style="color: #001080">${id}</span><span style="color: #A31515"> --role master --region eu-central-1)&quot;</span>
 
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>&quot;</span>
+<span style="color: #000000">    aws-authenticate set-alias --name </span><span style="color: #A31515">&quot;</span><span style="color: #001080">${safeName}</span><span style="color: #A31515">&quot;</span>
+<span style="color: #000000">)</span>
 
-    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">&quot;<span class="hljs-variable">${safeName}</span>&quot;</span>
-)
+<span style="color: #AF00DB">done</span>
 
-<span class="hljs-keyword">done</span>
 </code></pre>
 				<p>If you have a tag called <code>Alias</code> on your accounts, you can set the account alias with the following script:</p>
-				<pre><code class="language-bash"><span class="hljs-meta">#!/bin/bash -e</span>
+				<pre><code class="language-bash"><span style="color: #008000">#!/bin/bash -e</span>
 
-<span class="hljs-built_in">export</span> accounts=$(aws-authenticate accounts --tags Alias)
+<span style="color: #0000FF">export</span><span style="color: #000000"> accounts=</span><span style="color: #A31515">$(aws-authenticate accounts --tags Alias)</span>
 
-<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${accounts}</span>&quot;</span> | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> account; <span class="hljs-keyword">do</span>
-(
-    id=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 1)
-    <span class="hljs-built_in">alias</span>=$(<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">${account}</span>&quot;</span> | cut -d <span class="hljs-string">&#x27;,&#x27;</span> -f 6)
-    <span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(aws-authenticate auth --roleAccount ${id} --role master --region eu-central-1)</span>&quot;</span>
-    aws-authenticate <span class="hljs-built_in">set</span>-alias --name <span class="hljs-string">&quot;<span class="hljs-variable">${alias}</span>&quot;</span>
-)
+<span style="color: #795E26">echo</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;</span><span style="color: #001080">${accounts}</span><span style="color: #A31515">&quot;</span><span style="color: #000000"> | </span><span style="color: #AF00DB">while</span><span style="color: #000000"> </span><span style="color: #795E26">read</span><span style="color: #000000"> account; </span><span style="color: #AF00DB">do</span>
+<span style="color: #000000">(</span>
+<span style="color: #000000">    id=</span><span style="color: #A31515">$(echo &quot;</span><span style="color: #001080">${account}</span><span style="color: #A31515">&quot; </span><span style="color: #000000">|</span><span style="color: #A31515"> cut -d &#039;,&#039; -f 1)</span>
+<span style="color: #000000">    alias=</span><span style="color: #A31515">$(echo &quot;</span><span style="color: #001080">${account}</span><span style="color: #A31515">&quot; </span><span style="color: #000000">|</span><span style="color: #A31515"> cut -d &#039;,&#039; -f 6)</span>
+<span style="color: #000000">    </span><span style="color: #795E26">eval</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;$(aws-authenticate auth --roleAccount </span><span style="color: #001080">${id}</span><span style="color: #A31515"> --role master --region eu-central-1)&quot;</span>
+<span style="color: #000000">    aws-authenticate set-alias --name </span><span style="color: #A31515">&quot;</span><span style="color: #001080">${alias}</span><span style="color: #A31515">&quot;</span>
+<span style="color: #000000">)</span>
 
-<span class="hljs-keyword">done</span>
+<span style="color: #AF00DB">done</span>
+
 </code></pre>
 				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
 					<h2>Documentation</h2>
@@ -162,8 +161,9 @@
 					<h3>id</h3>
 				</a>
 				<p>With the <code>id</code> command, the tool prints the currently configured IAM principal to the console</p>
-				<pre><code class="language-bash">$ aws-authenticate id
-<span class="hljs-comment"># Account: 123456789012 - User: arn:aws:iam::123456789012:user/johndoe</span></code></pre>
+				<pre><code class="language-bash"><span style="color: #000000">$ aws-authenticate id</span>
+<span style="color: #008000"># Account: 123456789012 - User: arn:aws:iam::123456789012:user/johndoe</span>
+</code></pre>
 				<a href="#clear" id="clear" style="color: inherit; text-decoration: none;">
 					<h3>clear</h3>
 				</a>
@@ -173,9 +173,13 @@
 				</a>
 				<p>The <code>accounts</code> command lists AWS accounts withing the currect organization.</p>
 				<p>Accounts are printed one account per line with the following fields in a CSV format.</p>
-				<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">EMAIL</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">NAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">SAFENAME</span>&gt;</span>,<span class="hljs-tag">&lt;<span class="hljs-name">STATUS</span>&gt;</span></code></pre><p>The safe name is the name with only alphanumeric characters and the rest being replaced with dashes.</p>
-				<pre><code><span class="hljs-number">123456789012</span>,acc1@example.com,My Example Account,<span class="hljs-keyword">my</span>-example-account,ACTIVE
-<span class="hljs-number">210987654321</span>,acc2@example.com,My Sub Account,<span class="hljs-keyword">my</span>-<span class="hljs-function"><span class="hljs-keyword">sub</span>-<span class="hljs-title">account</span>,<span class="hljs-title">ACTIVE</span></span></code></pre><p>Valid options are:</p>
+				<pre><code><span style="color: #000000">&lt;</span><span style="color: #267F99">ID</span><span style="color: #000000">&gt;,&lt;</span><span style="color: #267F99">EMAIL</span><span style="color: #000000">&gt;,&lt;</span><span style="color: #267F99">NAME</span><span style="color: #000000">&gt;,&lt;</span><span style="color: #267F99">SAFENAME</span><span style="color: #000000">&gt;,&lt;</span><span style="color: #267F99">STATUS</span><span style="color: #000000">&gt;</span>
+</code></pre>
+				<p>The safe name is the name with only alphanumeric characters and the rest being replaced with dashes.</p>
+				<pre><code><span style="color: #098658">123456789012</span><span style="color: #000000">,</span><span style="color: #001080">acc1</span><span style="color: #000000">@</span><span style="color: #001080">example</span><span style="color: #000000">.</span><span style="color: #001080">com</span><span style="color: #000000">,</span><span style="color: #001080">My</span><span style="color: #000000"> </span><span style="color: #001080">Example</span><span style="color: #000000"> </span><span style="color: #001080">Account</span><span style="color: #000000">,</span><span style="color: #001080">my</span><span style="color: #000000">-</span><span style="color: #001080">example</span><span style="color: #000000">-</span><span style="color: #001080">account</span><span style="color: #000000">,</span><span style="color: #0070C1">ACTIVE</span>
+<span style="color: #098658">210987654321</span><span style="color: #000000">,</span><span style="color: #001080">acc2</span><span style="color: #000000">@</span><span style="color: #001080">example</span><span style="color: #000000">.</span><span style="color: #001080">com</span><span style="color: #000000">,</span><span style="color: #001080">My</span><span style="color: #000000"> </span><span style="color: #001080">Sub</span><span style="color: #000000"> </span><span style="color: #001080">Account</span><span style="color: #000000">,</span><span style="color: #001080">my</span><span style="color: #000000">-</span><span style="color: #001080">sub</span><span style="color: #000000">-</span><span style="color: #001080">account</span><span style="color: #000000">,</span><span style="color: #0070C1">ACTIVE</span>
+</code></pre>
+				<p>Valid options are:</p>
 				<ul>
 					<li><code>--parent &lt;parent&gt;</code> - Limit the account list to the given orga parent (OU)</li>
 					<li><code>--tags key1,key2</code>  - Show account tags as additional columns</li>
@@ -200,9 +204,17 @@
 				<a href="#changelog" id="changelog" style="color: inherit; text-decoration: none;">
 					<h1>Changelog</h1>
 				</a>
-				<a href="#master" id="master" style="color: inherit; text-decoration: none;">
-					<h2>master</h2>
+				<a href="#newer" id="newer" style="color: inherit; text-decoration: none;">
+					<h2>NEWER</h2>
 				</a>
+				<p>See Github releases</p>
+				<a href="#150" id="150" style="color: inherit; text-decoration: none;">
+					<h2>1.5.0</h2>
+				</a>
+				<ul>
+					<li>update deps</li>
+					<li>add support to write auth to new profile</li>
+				</ul>
 				<a href="#140" id="140" style="color: inherit; text-decoration: none;">
 					<h2>1.4.0</h2>
 				</a>
@@ -295,91 +307,13 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#args" class="tsd-kind-icon">args</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#awsenv" class="tsd-kind-icon">aws<wbr>Env</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#command" class="tsd-kind-icon">command</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#duration" class="tsd-kind-icon">duration</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#externalid" class="tsd-kind-icon">external<wbr>Id</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#profile" class="tsd-kind-icon">profile</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#region" class="tsd-kind-icon">region</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#role" class="tsd-kind-icon">role</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#roleaccount" class="tsd-kind-icon">role<wbr>Account</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#rolesessionname" class="tsd-kind-icon">role<wbr>Session<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#rolesessionpolicy" class="tsd-kind-icon">role<wbr>Session<wbr>Policy</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#targetprofile" class="tsd-kind-icon">target<wbr>Profile</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#doauth" class="tsd-kind-icon">do<wbr>Auth</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#doclear" class="tsd-kind-icon">do<wbr>Clear</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getconfigobject" class="tsd-kind-icon">get<wbr>Config<wbr>Object</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getdefaultfilepath" class="tsd-kind-icon">get<wbr>Default<wbr>File<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#gethomedir" class="tsd-kind-icon">get<wbr>Home<wbr>Dir</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#getrolearn" class="tsd-kind-icon">get<wbr>Role<wbr>Arn</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#setalias" class="tsd-kind-icon">set<wbr>Alias</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#showaccounts" class="tsd-kind-icon">show<wbr>Accounts</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#showhelp" class="tsd-kind-icon">show<wbr>Help</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#showid" class="tsd-kind-icon">show<wbr>Id</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#updateidp" class="tsd-kind-icon">update<wbr>Idp</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#withprofile" class="tsd-kind-icon">with<wbr>Profile</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#withregion" class="tsd-kind-icon">with<wbr>Region</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#withrole" class="tsd-kind-icon">with<wbr>Role</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -397,6 +331,5 @@
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
