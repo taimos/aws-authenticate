@@ -17,12 +17,12 @@ const project = new TaimosTypescriptLibrary({
     'minimist',
     'proxy-agent',
   ],
-  gitpod: false,
   devDeps: [
     '@taimos/projen',
     'ts-node',
     '@types/minimist',
   ],
+  gitpod: true,
   pullRequestTemplateContents: [`* **Please check if the PR fulfills these requirements**
 - [ ] The commit message describes your change
 - [ ] Tests for the changes have been added if possible (for bug fixes / features)
@@ -47,14 +47,6 @@ const project = new TaimosTypescriptLibrary({
 
 
 * **Other information**:`],
-});
-
-const gp = new Gitpod(project, {
-  dockerImage: DevEnvironmentDockerImage.fromImage('taimos/gitpod'),
-});
-gp.addCustomTask({
-  init: 'yarn install --check-files --frozen-lockfile',
-  command: 'npx projen build',
 });
 
 project.synth();
