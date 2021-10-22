@@ -23,6 +23,11 @@ const project = new TaimosTypescriptLibrary({
     '@types/minimist',
   ],
   gitpod: true,
+  tsconfig: {
+    compilerOptions: {
+      lib: ['es2019', 'dom'],
+    },
+  },
   pullRequestTemplateContents: [`* **Please check if the PR fulfills these requirements**
 - [ ] The commit message describes your change
 - [ ] Tests for the changes have been added if possible (for bug fixes / features)
