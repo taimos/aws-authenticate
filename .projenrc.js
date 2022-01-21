@@ -1,5 +1,4 @@
 const { TaimosTypescriptLibrary } = require('@taimos/projen');
-const { DependenciesUpgradeMechanism, Gitpod, DevEnvironmentDockerImage } = require('projen');
 
 const project = new TaimosTypescriptLibrary({
   defaultReleaseBranch: 'main',
@@ -7,7 +6,8 @@ const project = new TaimosTypescriptLibrary({
   description: 'AWS CLI tool for authorization',
   keywords: ['amazon',
     'aws',
-    'auth'],
+    'auth',
+  ],
   license: 'MIT',
   bin: {
     'aws-authenticate': 'lib/index.js',
@@ -23,6 +23,13 @@ const project = new TaimosTypescriptLibrary({
     '@types/minimist',
   ],
   gitpod: true,
+  autoApproveUpgrades: true,
+  autoApproveOptions: { allowedUsernames: ['hoegertn'], secret: 'GITHUB_TOKEN' },
+  depsUpgradeOptions: {
+    workflowOptions: {
+      secret: 'GH_TOKEN',
+    },
+  },
   tsconfig: {
     compilerOptions: {
       lib: ['es2019', 'dom'],
