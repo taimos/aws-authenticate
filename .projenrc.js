@@ -6,8 +6,7 @@ const project = new TaimosTypescriptLibrary({
   description: 'AWS CLI tool for authorization',
   keywords: ['amazon',
     'aws',
-    'auth',
-  ],
+    'auth'],
   license: 'MIT',
   bin: {
     'aws-authenticate': 'lib/index.js',
