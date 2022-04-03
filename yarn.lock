@@ -4089,15 +4089,10 @@ minimist-options@4.1.0:
     is-plain-obj "^1.1.0"
     kind-of "^6.0.3"
 
-minimist@^1.2.0, minimist@^1.2.5, minimist@^1.2.6:
+minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5, minimist@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
-
-minimist@^1.2.3:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
@@ -4744,10 +4739,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.51.9:
-  version "0.51.9"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.51.9.tgz#a23164a39c2b871422d8980727c5dcf6d4c68bb2"
-  integrity sha512-jrJPdJiON/WdYiXQcJnRnMsb/jqgdj/uOiRsaTrE98mx4oO0sPL1Uuyf6kwhb5x8EuD/Z1w/imeRwGm0LmZFDw==
+projen@^0.54.5:
+  version "0.54.5"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.54.5.tgz#f71a503656994285c1ba93d40f1802b4e6309020"
+  integrity sha512-o56+Wty2c8EqTrjPQmY3pejZZ25b/F5/lDF7koLNtFsWCHUApil+2zG5RX6CMn91MHGYijxWQNcmYSB4rFCFZQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
@@ -5044,16 +5039,7 @@ resolve.exports@^1.1.0:
   resolved "https://registry.yarnpkg.com/resolve.exports/-/resolve.exports-1.1.0.tgz#5ce842b94b05146c0e03076985d1d0e7e48c90c9"
   integrity sha512-J1l+Zxxp4XK3LUDZ9m60LRJF/mAe4z6a4xyabPHk7pvK5t35dACV32iIjJDFeWZFfZlO29w6SZ67knR0tHzJtQ==
 
-resolve@^1.1.6:
-  version "1.21.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.21.1.tgz#1a88c73f5ca8ab0aabc8b888c4170de26c92c4cc"
-  integrity sha512-lfEImVbnolPuaSZuLQ52cAxPBHeI77sPwCOWRdy12UG/CNa8an7oBHH1R+Fp1/mUqSJi4c8TIP6FOIPSZAUrEQ==
-  dependencies:
-    is-core-module "^2.8.0"
-    path-parse "^1.0.7"
-    supports-preserve-symlinks-flag "^1.0.0"
-
-resolve@^1.10.0, resolve@^1.20.0, resolve@^1.22.0:
+resolve@^1.1.6, resolve@^1.10.0, resolve@^1.20.0, resolve@^1.22.0:
   version "1.22.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
   integrity sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==
@@ -6115,9 +6101,9 @@ yaml@^1.10.2:
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
 yaml@next:
-  version "2.0.0-10"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.0.0-10.tgz#d5b59e2d14b8683313a534f2bbc648e211a2753e"
-  integrity sha512-FHV8s5ODFFQXX/enJEU2EkanNl1UDBUz8oa4k5Qo/sR+Iq7VmhCDkRMb0/mjJCNeAWQ31W8WV6PYStDE4d9EIw==
+  version "2.0.0-11"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.0.0-11.tgz#269af42637a41ec1ebf2abb546a28949545f0cbb"
+  integrity sha512-5kGSQrzDyjCk0BLuFfjkoUE9vYcoyrwZIZ+GnpOSM9vhkvPjItYiWJ1jpRSo0aU4QmsoNrFwDT4O7XS2UGcBQg==
 
 yargs-parser@20.x, yargs-parser@^20.2.2, yargs-parser@^20.2.3:
   version "20.2.9"
