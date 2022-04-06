@@ -24,14 +24,9 @@ const project = new TaimosTypescriptLibrary({
   ],
   gitpod: true,
   autoApproveUpgrades: true,
-  autoApproveOptions: { allowedUsernames: ['hoegertn'], secret: 'GITHUB_TOKEN' },
+  autoApproveOptions: { allowedUsernames: ['hoegertn', 'taimos-projen[bot]'], secret: 'GITHUB_TOKEN' },
   githubOptions: {
     projenCredentials: github.GithubCredentials.fromApp(),
-  },
-  depsUpgradeOptions: {
-    workflowOptions: {
-      secret: 'GH_TOKEN',
-    },
   },
   tsconfig: {
     compilerOptions: {
