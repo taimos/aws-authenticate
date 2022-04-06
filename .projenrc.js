@@ -5,9 +5,11 @@ const project = new TaimosTypescriptLibrary({
   defaultReleaseBranch: 'main',
   name: 'aws-authenticate',
   description: 'AWS CLI tool for authorization',
-  keywords: ['amazon',
+  keywords: [
+    'amazon',
     'aws',
-    'auth'],
+    'auth',
+  ],
   license: 'MIT',
   bin: {
     'aws-authenticate': 'lib/index.js',
@@ -19,7 +21,6 @@ const project = new TaimosTypescriptLibrary({
   ],
   devDeps: [
     '@taimos/projen',
-    'ts-node',
     '@types/minimist',
   ],
   gitpod: true,
