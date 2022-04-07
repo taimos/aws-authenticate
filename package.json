@@ -33,7 +33,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@taimos/projen": "^0.0.133",
+    "@taimos/projen": "^0.0.134",
     "@types/jest": "^27.4.1",
     "@types/minimist": "^1.2.2",
     "@types/node": "^12",
