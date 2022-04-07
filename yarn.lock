@@ -681,10 +681,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@taimos/projen@^0.0.133":
-  version "0.0.133"
-  resolved "https://registry.yarnpkg.com/@taimos/projen/-/projen-0.0.133.tgz#7f2c0f18941dac24e73ea547d95d9227a40c4db7"
-  integrity sha512-VE30NHCMjk9/KGGe3LwMlNuPzAevUFYiOfcXL9fkF9aTyWJPLsj/P4pojYhuddYNDbFbxIz5kGXBKh8xts2etw==
+"@taimos/projen@^0.0.134":
+  version "0.0.134"
+  resolved "https://registry.yarnpkg.com/@taimos/projen/-/projen-0.0.134.tgz#cc18b4ed04585b9ad481215dd8763b66d848d32e"
+  integrity sha512-WPO/uJ+11q0tOOJDlXeBFVg7SowtBYYVM7yF2Ed/25lJ2sbHFtKZ18olitpfLriIF39tDpOP8FGuRXF+73N+8A==
 
 "@tootallnate/once@1":
   version "1.1.2"
