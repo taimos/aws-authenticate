@@ -55,7 +55,7 @@
     "typescript": "^4.4.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.1134.0",
+    "aws-sdk": "^2.1135.0",
     "minimist": "^1.2.6",
     "proxy-agent": "^5.0.0"
   },
