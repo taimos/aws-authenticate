@@ -33,7 +33,7 @@
     "organization": true
   },
   "devDependencies": {
-    "@taimos/projen": "^0.0.173",
+    "@taimos/projen": "^0.0.174",
     "@types/jest": "^27.5.1",
     "@types/minimist": "^1.2.2",
     "@types/node": "^14",
@@ -47,7 +47,7 @@
     "jest-junit": "^13",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
-    "projen": "^0.56.26",
+    "projen": "^0.56.27",
     "standard-version": "^9",
     "ts-jest": "^27",
     "ts-node": "^10.8.0",
